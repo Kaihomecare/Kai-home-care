@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Kai Home Care</title>
+<meta name="description" content="Get in touch with Kai Home Care. Serving families across Oʻahu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.con-sec { padding: 96px 0 116px; }
+.con-grid { display: grid; grid-template-columns: 6fr 5fr; gap: 80px; align-items: start; }
+@media (max-width: 860px){ .con-grid { grid-template-columns: 1fr; gap: 44px; } }
+.con-left .eyebrow { display: block; margin-bottom: 14px; }
+.con-left h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 22px; }
+.con-left .lede { color: var(--muted); font-size: 1.1rem; line-height: 1.75; max-width: 460px; margin-bottom: 44px; }
+.con-list { list-style: none; border-top: 1px solid var(--line); max-width: 460px; }
+.con-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line-soft); }
+.con-list .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); font-weight: 600; }
+.con-list .v { font-size: 1.05rem; font-weight: 600; }
+.con-list .v a { color: var(--ocean); }
+.con-right .ph { min-height: 480px; }
+.con-cta { margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="brand">Kai Home Care</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+    <div class="nav-links" id="navlinks">
+      <a href="/#services">Services</a>
+      <a href="/care-estimate.html">Care Estimate</a>
+      <a href="/careers.html">Careers</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/care-estimate.html" class="nav-cta">See your care plan</a>
+    </div>
+  </nav>
+</header>
+
+<section class="con-sec">
+  <div class="wrap">
+    <div class="con-grid">
+      <div class="con-left">
+        <span class="eyebrow">Contact</span>
+        <h1>A real person answers.</h1>
+        <p class="lede">Questions, a situation you want to talk through, or a family that needs help soon. Call, write, or start with the estimate. You'll reach a Kai coordinator here on Oʻahu.</p>
+        <ul class="con-list">
+          <li><span class="k">Phone</span><span class="v"><a href="tel:8084009627">808.400.9627</a></span></li>
+          <li><span class="k">Email</span><span class="v"><a href="mailto:Chris@kaihomecare.com">Chris@kaihomecare.com</a></span></li>
+          <li><span class="k">Service area</span><span class="v">Oʻahu, Hawaiʻi</span></li>
+        </ul>
+        <div class="con-cta">
+          <a href="/care-estimate.html" class="btn btn-primary">See your care plan</a>
+          <a href="tel:8084009627" class="btn btn-ghost">Call now</a>
+        </div>
+      </div>
+      <div class="con-right">
+        <figure class="ph"><span>Photo: the Koʻolau from a living room window</span></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap"><div class="footer-bottom" style="border:0;">© 2026 Kai Home Care. Licensed and insured. Serving Oʻahu with aloha.</div></div>
+</footer>
+
+</body>
+</html>

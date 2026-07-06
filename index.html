@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kai Home Care — In-Home Care on Oʻahu</title>
+<meta name="description" content="Licensed, insured in-home care across Oʻahu. Homemaker and personal care from W-2 employee caregivers. See your care plan and cost in two minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ===== landing v2: editorial, layered, calm ===== */
+
+/* hero */
+.hero2 { position: relative; background: var(--ocean-deep); overflow: hidden; }
+.hero2 canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hero2::after { content:""; position:absolute; inset:0; background-image: var(--grain); opacity:.4; pointer-events:none; }
+.hero2-inner { position: relative; z-index: 2; max-width: var(--maxw); margin: 0 auto; padding: 132px 28px 148px; }
+.hero2 .eyebrow { color: var(--seaglass); margin-bottom: 26px; display: block; }
+.hero2 h1 {
+  color: var(--paper);
+  font-size: clamp(2.7rem, 6.4vw, 4.7rem);
+  font-weight: 500;
+  max-width: 700px;
+  margin-bottom: 26px;
+}
+.hero2 h1 em { font-style: italic; font-weight: 400; color: var(--sand); }
+.hero2 p.sub { font-size: 1.16rem; color: #B9C6CB; max-width: 470px; margin-bottom: 44px; line-height: 1.75; }
+.hero2-actions { display: flex; gap: 26px; flex-wrap: wrap; align-items: center; }
+.hero2 .call-quiet { color: var(--sand); font-weight: 600; font-size: 1.02rem; }
+.hero2 .call-quiet:hover { color: var(--white); text-decoration: none; }
+.hero2 .call-quiet small { display: block; font-weight: 400; font-size: 0.76rem; color: #7E939C; margin-top: 3px; letter-spacing: 0.02em; }
+
+/* trust strip: hairline ledger on paper */
+.trust { background: var(--paper); border-bottom: 1px solid var(--line-soft); }
+.trust-row {
+  max-width: var(--maxw); margin: 0 auto; padding: 0 28px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+}
+.trust-row > span {
+  padding: 26px 22px 26px 0;
+  font-size: 0.86rem; color: var(--muted); line-height: 1.55;
+  border-left: 1px solid var(--line-soft);
+  padding-left: 22px;
+}
+.trust-row > span:first-child { border-left: 0; padding-left: 0; }
+.trust-row b { color: var(--ocean); font-weight: 600; display: block; margin-bottom: 2px; }
+@media (max-width: 860px){
+  .trust-row { grid-template-columns: 1fr 1fr; }
+  .trust-row > span:nth-child(3) { border-left: 0; padding-left: 0; }
+}
+@media (max-width: 520px){
+  .trust-row { grid-template-columns: 1fr; }
+  .trust-row > span { border-left: 0; padding-left: 0; border-top: 1px solid var(--line-soft); }
+  .trust-row > span:first-child { border-top: 0; }
+}
+
+/* services: editorial split, ruled lists */
+.svc-sec { padding: 116px 0 60px; }
+.svc-head { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: end; margin-bottom: 72px; }
+@media (max-width: 860px){ .svc-head { grid-template-columns: 1fr; gap: 20px; } }
+.svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--line); }
+@media (max-width: 760px){ .svc-grid { grid-template-columns: 1fr; } }
+.svc { padding: 48px 56px 56px 0; }
+.svc + .svc { border-left: 1px solid var(--line); padding-left: 56px; padding-right: 0; }
+@media (max-width: 760px){
+  .svc + .svc { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }
+  .svc { padding: 40px 0; }
+}
+.svc .tag { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; color: var(--seaglass-deep); }
+.svc.personal .tag { color: var(--coral-dark); }
+.svc h3 { font-size: clamp(1.6rem, 3vw, 2.1rem); margin: 14px 0 14px; }
+.svc > p { color: var(--muted); line-height: 1.75; margin-bottom: 26px; max-width: 400px; }
+.svc ul { list-style: none; }
+.svc li { padding: 12px 0; border-top: 1px solid var(--line-soft); color: var(--ink); font-size: 0.98rem; }
+
+/* image interlude: full-bleed editorial */
+.interlude { padding: 60px 0 116px; }
+.interlude .frame { display: grid; grid-template-columns: 7fr 5fr; gap: 0; align-items: stretch; }
+@media (max-width: 860px){ .interlude .frame { grid-template-columns: 1fr; } }
+.interlude .ph { min-height: 440px; border-radius: 0; }
+.interlude .side {
+  background: var(--ocean); color: var(--sand);
+  padding: 56px 52px; display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.interlude .side::before { content:""; position:absolute; inset:0; background-image: var(--grain); opacity:.35; }
+.interlude .side p {
+  font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem); line-height: 1.5; color: var(--paper);
+  position: relative;
+}
+.interlude .side small { margin-top: 22px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--seaglass); font-weight: 600; position: relative; }
+
+/* calculator band */
+.calc-band { background: var(--ocean); color: var(--sand); position: relative; overflow: hidden; }
+.calc-band::before { content:""; position:absolute; inset:0; background-image: var(--grain); opacity:.35; }
+.calc-band .inner { max-width: var(--maxw); margin: 0 auto; padding: 116px 28px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 80px; align-items: center; position: relative; z-index: 2; }
+@media (max-width: 880px){ .calc-band .inner { grid-template-columns: 1fr; gap: 52px; } }
+.calc-band .eyebrow { color: var(--seaglass); display: block; margin-bottom: 14px; }
+.calc-band h2 { color: var(--paper); font-size: clamp(2rem, 4.2vw, 2.9rem); margin-bottom: 18px; }
+.calc-band .lede { color: #B9C6CB; font-size: 1.1rem; line-height: 1.75; max-width: 480px; }
+.calc-band .btn-primary { margin-top: 34px; }
+.calc-band .fine { margin-top: 18px; font-size: 0.83rem; color: #7E939C; letter-spacing: 0.02em; }
+
+/* the paper artifact */
+.mini-plan {
+  background: var(--paper); padding: 34px 34px 30px;
+  box-shadow: var(--shadow-lift);
+  transform: rotate(0.5deg);
+  position: relative;
+}
+.mini-plan::before { content:""; position:absolute; inset:0; background-image: var(--grain); opacity:.5; pointer-events:none; }
+.mini-plan .mp-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--ocean); padding-bottom: 12px; margin-bottom: 22px; }
+.mini-plan .mp-head b { font-family: 'Fraunces', serif; color: var(--ocean); font-size: 1.02rem; font-weight: 600; }
+.mini-plan .mp-head span { font-size: 0.64rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.16em; font-weight: 600; }
+.mp-stats { display: flex; margin-bottom: 22px; }
+.mp-stat { flex: 1; }
+.mp-stat + .mp-stat { border-left: 1px solid var(--line); padding-left: 18px; }
+.mp-stat .l { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); font-weight: 600; }
+.mp-stat .v { font-family: 'Fraunces', serif; font-size: 1.28rem; color: var(--ocean); margin-top: 4px; }
+.mp-week { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; }
+.mp-day { height: 38px; position: relative; border-bottom: 2px solid var(--ocean); }
+.mp-day i { position: absolute; bottom: 0; left: 24%; right: 24%; background: var(--coral); display: block; }
+.mp-day.off i { background: var(--line-soft); height: 4px !important; }
+.mp-cap { font-size: 0.72rem; color: var(--muted); margin-top: 12px; font-style: italic; }
+
+/* why home: image offset + pulled stat */
+.why-sec { padding: 116px 0; }
+.why-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 84px; align-items: start; }
+@media (max-width: 880px){ .why-grid { grid-template-columns: 1fr; gap: 44px; } }
+.why-left .ph { min-height: 500px; }
+.why-left .fact86 { display: flex; gap: 22px; align-items: baseline; margin-top: 34px; padding-top: 26px; border-top: 1px solid var(--line); }
+.fact86 .n { font-family: 'Fraunces', serif; font-size: 4rem; color: var(--coral); line-height: 0.9; letter-spacing: -0.02em; }
+.fact86 .t { color: var(--muted); font-size: 0.92rem; line-height: 1.6; max-width: 250px; }
+.why-right .big-line {
+  font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(1.4rem, 2.7vw, 1.85rem); line-height: 1.45; color: var(--ocean);
+  margin: 18px 0 30px;
+}
+.why-right p.body { color: var(--ink); line-height: 1.85; font-size: 1.03rem; }
+.why-right p.body + p.body { margin-top: 18px; }
+
+/* steps: ruled ledger */
+.steps-sec { background: var(--sand-light); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 64px; border-top: 1px solid var(--line); }
+@media (max-width: 860px){ .steps-grid { grid-template-columns: 1fr; border-top: 0; } }
+.stp { padding: 34px 30px 12px 0; border-right: 1px solid var(--line); padding-right: 30px; }
+.stp:last-child { border-right: 0; }
+@media (max-width: 860px){ .stp { border-right: 0; border-top: 1px solid var(--line); padding: 26px 0 10px; } }
+.stp .n { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.9rem; color: var(--coral); }
+.stp h4 { font-size: 1.14rem; margin: 12px 0 10px; }
+.stp p { color: var(--muted); font-size: 0.93rem; line-height: 1.7; }
+
+/* closing */
+.close-band { background: var(--ocean-deep); position: relative; overflow: hidden; }
+.close-band::before { content:""; position:absolute; inset:0; background-image: var(--grain); opacity:.4; }
+.close-band .inner { max-width: 800px; margin: 0 auto; padding: 128px 28px; position: relative; }
+.close-band .eyebrow { color: var(--seaglass); display: block; margin-bottom: 16px; }
+.close-band h2 { color: var(--paper); font-size: clamp(2rem, 4.4vw, 3.1rem); margin-bottom: 20px; max-width: 640px; }
+.close-band p { color: #B9C6CB; font-size: 1.1rem; line-height: 1.8; max-width: 560px; }
+.close-band .acts { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="brand">Kai Home Care</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+    <div class="nav-links" id="navlinks">
+      <a href="#services">Services</a>
+      <a href="/care-estimate.html">Care Estimate</a>
+      <a href="/careers.html">Careers</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/care-estimate.html" class="nav-cta">See your care plan</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero2">
+  <canvas id="sea" aria-hidden="true"></canvas>
+  <div class="hero2-inner">
+    <span class="eyebrow">In-home care · Oʻahu</span>
+    <h1>Care that lets home <em>stay home.</em></h1>
+    <p class="sub">Trusted caregivers in the house your family loves, from a licensed, local agency that answers its own phone.</p>
+    <div class="hero2-actions">
+      <a href="/care-estimate.html" class="btn btn-primary">See your care plan and cost</a>
+      <a href="tel:8084009627" class="call-quiet">808.400.9627<small>A coordinator answers, not a queue</small></a>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="trust-row">
+    <span><b>Licensed and insured</b> in the State of Hawaiʻi</span>
+    <span><b>W-2 employee caregivers</b> Never contractors in your home</span>
+    <span><b>Nurse-built care plans</b> Free in-home evaluation</span>
+    <span><b>All of Oʻahu</b> Windward to West side</span>
+  </div>
+</div>
+
+<section class="svc-sec" id="services">
+  <div class="wrap">
+    <div class="svc-head">
+      <div class="rv">
+        <span class="eyebrow">What we do</span>
+        <h2 style="font-size:clamp(2rem,4.4vw,3.1rem);margin-top:14px;">Two kinds of help, one steady presence.</h2>
+      </div>
+      <p class="lede rv">Every family's needs are different. Most start with one service and blend both as needs change.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc rv">
+        <span class="tag">Homemaker Services</span>
+        <h3>The home, handled.</h3>
+        <p>Non-medical support that keeps daily life running, with a caring companion alongside.</p>
+        <ul>
+          <li>Companionship and a watchful eye</li>
+          <li>Meals planned and prepared</li>
+          <li>Light housekeeping and laundry</li>
+          <li>Errands, groceries, appointments</li>
+          <li>Respite for family caregivers</li>
+        </ul>
+      </div>
+      <div class="svc personal rv">
+        <span class="tag">Personal Care Services</span>
+        <h3>Hands-on daily care.</h3>
+        <p>Trained nurse aides who help with the personal tasks of everyday living, with dignity first.</p>
+        <ul>
+          <li>Bathing, dressing, grooming</li>
+          <li>Safe movement and transfers</li>
+          <li>Toileting and continence care</li>
+          <li>Medication reminders</li>
+          <li>Feeding and hydration support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="interlude">
+  <div class="wrap">
+    <div class="frame rv">
+      <figure class="ph"><span>Photo: morning light through a lanai, Kailua</span></figure>
+      <div class="side">
+        <p>The kitchen where she raised her kids. The chair where he reads. Care should come to the life, not the other way around.</p>
+        <small>Kai Home Care · Oʻahu</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="calc-band">
+  <div class="inner">
+    <div class="rv">
+      <span class="eyebrow">The care estimate</span>
+      <h2>See a real plan, with a real cost, in about two minutes.</h2>
+      <p class="lede">Answer a few questions about your family. We'll show a recommended care level, a weekly schedule, and an honest price. No email required, no games.</p>
+      <a href="/care-estimate.html" class="btn btn-primary">Start your care estimate</a>
+      <p class="fine">Free. Nothing to sign. Print it and compare us to anyone.</p>
+    </div>
+    <div class="mini-plan rv" aria-hidden="true">
+      <div class="mp-head"><b>Kai Home Care</b><span>Care plan</span></div>
+      <div class="mp-stats">
+        <div class="mp-stat"><div class="l">Care level</div><div class="v">Blended</div></div>
+        <div class="mp-stat"><div class="l">Rhythm</div><div class="v">5 days · 4 hrs</div></div>
+        <div class="mp-stat"><div class="l">Weekly</div><div class="v">$1,020</div></div>
+      </div>
+      <div class="mp-week">
+        <div class="mp-day"><i style="height:68%"></i></div>
+        <div class="mp-day"><i style="height:68%"></i></div>
+        <div class="mp-day"><i style="height:68%"></i></div>
+        <div class="mp-day"><i style="height:68%"></i></div>
+        <div class="mp-day"><i style="height:68%"></i></div>
+        <div class="mp-day off"><i></i></div>
+        <div class="mp-day off"><i></i></div>
+      </div>
+      <p class="mp-cap">A starting rhythm, shaped around your family's week.</p>
+    </div>
+  </div>
+</section>
+
+<section class="why-sec">
+  <div class="wrap">
+    <div class="why-grid">
+      <div class="why-left rv">
+        <figure class="ph"><span>Photo: a wall of family photographs, afternoon</span></figure>
+        <div class="fact86">
+          <span class="n">86%</span>
+          <span class="t">of adults 65 and older say they want to stay in their own homes as long as possible. <em style="font-style:normal;color:#98A3A7;">AARP, 2018</em></span>
+        </div>
+      </div>
+      <div class="why-right rv">
+        <span class="eyebrow">Why home</span>
+        <h2 style="margin-top:14px;">Familiar is functional.</h2>
+        <p class="big-line">The house someone has lived in for decades is a map their memory already holds.</p>
+        <p class="body">Home isn't sentimental. For an aging body, and especially an aging mind, familiar surroundings do quiet work every day: orientation, confidence, routine. Research on moving older adults points the same direction again and again. Relocation is a setback, and for people with memory changes, an unfamiliar place commonly deepens confusion.</p>
+        <p class="body">Care at home, done well, holds people steady. In studies of nurse-coordinated care in the community, people tended to hold or improve while comparable nursing-home residents declined. Staying home isn't the compromise. It's often the better medicine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps-sec sec">
+  <div class="wrap">
+    <div class="rv">
+      <span class="eyebrow">How it starts</span>
+      <h2>From first call to first visit.</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="stp rv"><div class="n">1</div><h4>A conversation</h4><p>Call or request a callback. You reach a coordinator on Oʻahu who listens first.</p></div>
+      <div class="stp rv"><div class="n">2</div><h4>A nurse visits, free</h4><p>Our nurse evaluates the home, the routines, and the risks, and builds the actual plan.</p></div>
+      <div class="stp rv"><div class="n">3</div><h4>The right match</h4><p>We match a caregiver for skill and for fit. The same faces return, visit after visit.</p></div>
+      <div class="stp rv"><div class="n">4</div><h4>Care begins, then adjusts</h4><p>We check in often in the first weeks and tune the schedule until it fits.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="close-band">
+  <div class="inner rv">
+    <span class="eyebrow">When you're ready</span>
+    <h2>Most families call from the middle of a crisis. You don't have to.</h2>
+    <p>The families who call a little early get to make these decisions calmly, on their own terms. Start with the estimate, or start with a conversation. Either way, you'll reach a real person here on Oʻahu.</p>
+    <div class="acts">
+      <a href="/care-estimate.html" class="btn btn-primary">See your care plan</a>
+      <a href="tel:8084009627" class="btn btn-sand">Call 808.400.9627</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Kai Home Care</div>
+        <p>In-home care across Oʻahu.</p>
+        <p style="margin-top:10px;"><a href="tel:8084009627">808.400.9627</a></p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="#services">Services</a>
+        <a href="/care-estimate.html">Care Estimate</a>
+        <a href="/careers.html">Careers</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Get in touch</h4>
+        <a href="tel:8084009627">808.400.9627</a>
+        <a href="mailto:Chris@kaihomecare.com">Chris@kaihomecare.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Kai Home Care. Licensed and insured. Serving Oʻahu with aloha.</div>
+  </div>
+</footer>
+
+<script>
+// hero water: slow layered swells, new palette
+(function(){
+  const cv = document.getElementById('sea');
+  const ctx = cv.getContext('2d');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, t = 0;
+  function size(){
+    const r = cv.parentElement.getBoundingClientRect();
+    w = cv.width = r.width * devicePixelRatio;
+    h = cv.height = r.height * devicePixelRatio;
+  }
+  size(); window.addEventListener('resize', size);
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    const g = ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0, '#0C1F29'); g.addColorStop(0.6, '#102834'); g.addColorStop(1, '#16303E');
+    ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    const layers = [
+      { yb: 0.60, amp: 13, len: 0.0016, sp: 0.011, col: 'rgba(110,156,146,0.09)' },
+      { yb: 0.71, amp: 19, len: 0.0011, sp: 0.007, col: 'rgba(110,156,146,0.13)' },
+      { yb: 0.83, amp: 25, len: 0.0008, sp: 0.0045, col: 'rgba(190,103,67,0.06)' },
+      { yb: 0.93, amp: 30, len: 0.0006, sp: 0.003, col: 'rgba(237,228,211,0.06)' }
+    ];
+    layers.forEach((L, i) => {
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      for(let x = 0; x <= w; x += 6 * devicePixelRatio){
+        const y = h * L.yb + Math.sin(x * L.len / devicePixelRatio + t * L.sp + i * 2.1) * L.amp * devicePixelRatio
+                + Math.sin(x * L.len * 2.3 / devicePixelRatio - t * L.sp * 0.7) * L.amp * 0.4 * devicePixelRatio;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(w, h); ctx.closePath();
+      ctx.fillStyle = L.col; ctx.fill();
+    });
+    t += 1;
+    if(!reduced) requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// scroll reveal
+(function(){
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+})();
+</script>
+
+</body>
+</html>
