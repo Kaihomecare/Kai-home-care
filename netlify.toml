@@ -1,0 +1,11 @@
+# Kai Home Care — Netlify configuration
+
+[build]
+  publish = "."
+
+# Send www to the bare domain (adjust after go-live if you prefer www)
+[[redirects]]
+  from = "https://www.kaihomecare.com/*"
+  to = "https://kaihomecare.com/:splat"
+  status = 301
+  force = true
