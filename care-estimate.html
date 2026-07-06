@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Care Estimate — Kai Home Care</title>
+<meta name="description" content="Answer a few questions and get a personalized starting care plan from Kai Home Care.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.calc-wrap { max-width: 640px; margin: 0 auto; padding: 48px 20px 80px; }
+.progress-track { height: 6px; background: rgba(27,58,75,0.12); border-radius: 999px; margin-bottom: 40px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--coral); border-radius: 999px; width: 0%; transition: width 0.35s ease; }
+.step { display: none; animation: rise 0.35s ease; }
+.step.active { display: block; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.step h2 { font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 10px; line-height: 1.2; }
+.step .hint { color: var(--muted); margin-bottom: 28px; font-size: 1rem; }
+.opts { display: flex; flex-direction: column; gap: 12px; }
+.opt { display: flex; align-items: center; gap: 14px; background: var(--white); border: 2px solid rgba(27,58,75,0.12); border-radius: var(--radius); padding: 18px 20px; font-size: 1.05rem; font-weight: 500; color: var(--ink); cursor: pointer; transition: border-color .15s, background .15s, transform .1s; text-align: left; width: 100%; }
+.opt:hover { border-color: var(--seaglass); transform: translateY(-1px); }
+.opt.selected { border-color: var(--coral); background: #FFF4EC; }
+.opt .box { width: 22px; height: 22px; border-radius: 6px; flex: none; border: 2px solid rgba(27,58,75,0.3); display: grid; place-items: center; font-size: 0.8rem; color: var(--white); background: transparent; }
+.opt.selected .box { background: var(--coral); border-color: var(--coral); }
+.opt.radio .box { border-radius: 50%; }
+.step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
+.back-link { background: none; border: 0; color: var(--muted); font-size: 0.95rem; cursor: pointer; padding: 10px; }
+.back-link:hover { color: var(--ocean); }
+.btn-next { min-width: 150px; }
+.btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.field { margin-bottom: 18px; }
+.field label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 7px; color: var(--ocean); }
+.field label em { font-weight: 400; color: var(--muted); font-style: normal; }
+.field input { width: 100%; padding: 15px 16px; font-size: 1.05rem; border: 2px solid rgba(27,58,75,0.15); border-radius: var(--radius); font-family: inherit; background: var(--white); }
+.field input:focus { outline: none; border-color: var(--seaglass); }
+.pill-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.pill { padding: 12px 22px; border-radius: 999px; border: 2px solid rgba(27,58,75,0.15); background: var(--white); font-size: 1rem; font-weight: 500; cursor: pointer; }
+.pill.selected { border-color: var(--coral); background: #FFF4EC; color: var(--coral-dark); font-weight: 600; }
+.privacy { font-size: 0.85rem; color: var(--muted); margin-top: 16px; }
+
+/* ============ THE CARE PLAN ============ */
+.plan-wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+.plan-doc { background: var(--white); border-radius: 22px; overflow: hidden; box-shadow: 0 8px 50px rgba(27,58,75,0.14); }
+
+/* Front page: the compare card */
+.plan-front { background: linear-gradient(165deg, var(--ocean) 0%, var(--ocean-deep) 100%); color: var(--sand); padding: 44px 40px 40px; position: relative; overflow: hidden; }
+.plan-front::before {
+  content: ""; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(123,169,160,0.35), transparent 70%);
+}
+.plan-kicker { display:flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; position: relative; }
+.plan-kicker .brand-mark { font-family: 'Fraunces', serif; font-size: 1.25rem; color: var(--white); }
+.plan-kicker .plan-date { font-size: 0.85rem; color: #9DB4BC; }
+.plan-front .prepared { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.75rem; color: var(--seaglass); font-weight: 700; margin-bottom: 10px; }
+.plan-front h1 { color: var(--white); font-size: clamp(1.7rem, 4.5vw, 2.4rem); font-family: 'Fraunces', serif; font-weight: 600; line-height: 1.15; margin-bottom: 30px; max-width: 480px; }
+.stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; position: relative; }
+.stat { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 18px 16px; }
+.stat .lab { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #9DB4BC; font-weight: 700; margin-bottom: 6px; }
+.stat .val { font-family: 'Fraunces', serif; font-size: 1.45rem; color: var(--white); line-height: 1.1; }
+.stat .val small { font-size: 0.8rem; font-family: 'Inter', sans-serif; color: #C8D6DA; font-weight: 500; display: block; margin-top: 3px; }
+@media (max-width: 620px) { .stat-row { grid-template-columns: 1fr; } }
+
+/* Week rhythm visual */
+.plan-week { padding: 36px 40px 8px; }
+.plan-week h3, .plan-sec h3 { font-family: 'Fraunces', serif; color: var(--ocean); font-size: 1.35rem; margin-bottom: 18px; }
+.week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.day { text-align: center; }
+.day .bar-track { height: 92px; background: var(--sand-light); border-radius: 10px; position: relative; overflow: hidden; margin-bottom: 8px; }
+.day .bar { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, var(--seaglass), #5E938A); border-radius: 10px 10px 0 0; }
+.day.on .bar { background: linear-gradient(180deg, var(--coral), var(--coral-dark)); }
+.day .dname { font-size: 0.78rem; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; }
+.day.on .dname { color: var(--coral-dark); }
+.day .dhrs { font-size: 0.72rem; color: var(--muted); }
+.week-caption { font-size: 0.9rem; color: var(--muted); margin-top: 14px; }
+
+/* Sections */
+.plan-sec { padding: 30px 40px; border-top: 1px solid rgba(27,58,75,0.08); }
+.plan-sec p { color: var(--ink); line-height: 1.7; }
+.plan-sec p + p { margin-top: 12px; }
+.visit-list { list-style: none; margin-top: 6px; }
+.visit-list li { padding: 9px 0 9px 30px; position: relative; line-height: 1.55; }
+.visit-list li::before { content: ""; position: absolute; left: 0; top: 16px; width: 9px; height: 9px; border-radius: 50%; background: var(--coral); }
+
+/* Risk cards */
+.risk-card { background: var(--sand-light); border-radius: 16px; padding: 24px 26px; margin-top: 16px; border-left: 5px solid var(--seaglass); }
+.risk-card h4 { font-family: 'Fraunces', serif; color: var(--ocean); font-size: 1.12rem; margin-bottom: 8px; }
+.risk-card p { font-size: 0.98rem; }
+.risk-card .fact { display: inline-block; background: var(--white); border-radius: 999px; padding: 5px 14px; font-size: 0.82rem; font-weight: 600; color: var(--coral-dark); margin-bottom: 10px; }
+
+/* Why Kai */
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+@media (max-width: 620px) { .why-grid { grid-template-columns: 1fr; } }
+.why-item { padding: 18px 20px; background: var(--sand-light); border-radius: 14px; }
+.why-item strong { display: block; color: var(--ocean); font-size: 1rem; margin-bottom: 4px; }
+.why-item span { font-size: 0.92rem; color: var(--muted); line-height: 1.5; }
+
+/* Cost detail */
+.cost-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.cost-table td { padding: 12px 0; border-bottom: 1px solid rgba(27,58,75,0.08); font-size: 1rem; }
+.cost-table td:last-child { text-align: right; font-weight: 600; color: var(--ocean); }
+.cost-fine { font-size: 0.85rem; color: var(--muted); margin-top: 14px; line-height: 1.55; }
+
+/* Call band on plan */
+.plan-cta { background: var(--seaglass); padding: 34px 40px; text-align: center; }
+.plan-cta h3 { color: var(--ocean-deep); margin-bottom: 6px; }
+.plan-cta p { color: var(--ocean-deep); margin-bottom: 18px; }
+.plan-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-print { background: var(--ocean); color: var(--white); }
+
+@media (max-width: 620px) {
+  .plan-front, .plan-week, .plan-sec, .plan-cta { padding-left: 22px; padding-right: 22px; }
+}
+
+/* Print */
+@media print {
+  .site-header, .site-footer, .plan-actions, .plan-cta p { display: none !important; }
+  body { background: #fff; }
+  .plan-wrap { padding: 0; max-width: none; }
+  .plan-doc { box-shadow: none; border-radius: 0; }
+  .plan-front { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .plan-sec, .risk-card { break-inside: avoid; }
+  .plan-cta { background: none; padding: 20px 40px; }
+  .plan-cta h3::after { content: "  ·  808.400.9627  ·  kaihomecare.com"; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="brand">Kai Home Care</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+    <div class="nav-links" id="navlinks">
+      <a href="/#services">Services</a>
+      <a href="/care-estimate.html">Care Estimate</a>
+      <a href="/careers.html">Careers</a>
+      <a href="/contact.html">Contact</a>
+      <a href="tel:8084009627" class="nav-cta">808.400.9627</a>
+    </div>
+  </nav>
+</header>
+
+<form name="care-lead" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name"><input type="text" name="phone"><input type="email" name="email">
+  <input type="text" name="bestTime"><input type="text" name="whoFor"><input type="text" name="dailyLevel">
+  <input type="text" name="hardParts"><input type="text" name="helpTypes"><input type="text" name="risks">
+  <input type="text" name="timeline"><input type="text" name="recommendedTier"><input type="text" name="recommendedHours">
+  <input type="text" name="estimatedCost">
+</form>
+
+<div class="calc-wrap" id="calcWrap">
+  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+
+  <section class="step active" data-step="1">
+    <h2>Who are we caring for?</h2>
+    <p class="hint">This helps us speak to your situation.</p>
+    <div class="opts" data-type="radio" data-field="whoFor">
+      <button class="opt radio" data-value="myself"><span class="box">✓</span>Myself</button>
+      <button class="opt radio" data-value="my parent"><span class="box">✓</span>My parent</button>
+      <button class="opt radio" data-value="my spouse"><span class="box">✓</span>My spouse</button>
+      <button class="opt radio" data-value="someone else"><span class="box">✓</span>Someone else I love</button>
+    </div>
+    <div class="step-nav"><span></span><button class="btn btn-primary btn-next" disabled>Next</button></div>
+  </section>
+
+  <section class="step" data-step="2">
+    <h2 id="q2title">How are they managing day to day?</h2>
+    <p class="hint">Be honest. Most families tell us they waited too long to ask.</p>
+    <div class="opts" data-type="radio" data-field="dailyLevel">
+      <button class="opt radio" data-value="independent"><span class="box">✓</span>Mostly independent, just needs a hand with some things</button>
+      <button class="opt radio" data-value="worry"><span class="box">✓</span>Getting by, but we worry when no one's there</button>
+      <button class="opt radio" data-value="most-tasks"><span class="box">✓</span>Needs help with most daily tasks</button>
+      <button class="opt radio" data-value="constant"><span class="box">✓</span>Needs someone nearby most or all of the time</button>
+    </div>
+    <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+  </section>
+
+  <section class="step" data-step="3">
+    <h2>Which parts of the day are hardest?</h2>
+    <p class="hint">Select all that apply. This is where care makes the biggest difference.</p>
+    <div class="opts" data-type="multi" data-field="hardParts">
+      <button class="opt" data-value="mornings"><span class="box">✓</span>Mornings — getting up, bathed, and dressed</button>
+      <button class="opt" data-value="meals"><span class="box">✓</span>Meals — cooking and eating well</button>
+      <button class="opt" data-value="safety"><span class="box">✓</span>Getting around the house safely</button>
+      <button class="opt" data-value="evenings"><span class="box">✓</span>Evenings and bedtime</button>
+      <button class="opt" data-value="errands"><span class="box">✓</span>Errands, appointments, and groceries</button>
+      <button class="opt" data-value="alone"><span class="box">✓</span>Too much time alone</button>
+    </div>
+    <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+  </section>
+
+  <section class="step" data-step="4">
+    <h2>What kind of help would make the biggest difference?</h2>
+    <p class="hint">Select all that apply.</p>
+    <div class="opts" data-type="multi" data-field="helpTypes">
+      <button class="opt" data-value="companionship"><span class="box">✓</span>Companionship and a watchful eye</button>
+      <button class="opt" data-value="meals-housekeeping"><span class="box">✓</span>Meals and housekeeping</button>
+      <button class="opt" data-value="bathing"><span class="box">✓</span>Bathing, dressing, and grooming</button>
+      <button class="opt" data-value="mobility"><span class="box">✓</span>Moving safely, transfers</button>
+      <button class="opt" data-value="medication"><span class="box">✓</span>Medication reminders</button>
+      <button class="opt" data-value="respite"><span class="box">✓</span>A break for the family caregiver</button>
+    </div>
+    <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+  </section>
+
+  <section class="step" data-step="5">
+    <h2>Any of these risks we should plan around?</h2>
+    <p class="hint">Select all that apply. These shape the care plan directly.</p>
+    <div class="opts" data-type="multi" data-field="risks">
+      <button class="opt" data-value="fall"><span class="box">✓</span>A fall in the last year</button>
+      <button class="opt" data-value="memory"><span class="box">✓</span>Memory changes or confusion</button>
+      <button class="opt" data-value="hospital"><span class="box">✓</span>Recent hospital stay or new diagnosis</button>
+      <button class="opt" data-value="nutrition"><span class="box">✓</span>Weight loss or not eating well</button>
+      <button class="opt" data-value="wandering"><span class="box">✓</span>Wandering or getting lost</button>
+      <button class="opt" data-value="none" data-exclusive="1"><span class="box">✓</span>None of these</button>
+    </div>
+    <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+  </section>
+
+  <section class="step" data-step="6">
+    <h2>How soon do you need care?</h2>
+    <p class="hint">There's no wrong answer. This just helps us respond the right way.</p>
+    <div class="opts" data-type="radio" data-field="timeline">
+      <button class="opt radio" data-value="right away"><span class="box">✓</span>Right away</button>
+      <button class="opt radio" data-value="within 2 weeks"><span class="box">✓</span>Within 2 weeks</button>
+      <button class="opt radio" data-value="within a month"><span class="box">✓</span>Within a month</button>
+      <button class="opt radio" data-value="just researching"><span class="box">✓</span>Just researching for now</button>
+    </div>
+    <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+  </section>
+
+  <section class="step" data-step="7">
+    <h2>Your care plan is ready.</h2>
+    <p class="hint">Tell us who it's for and we'll show your personalized plan, including estimated cost, right now.</p>
+    <div class="field"><label for="f-name">Your name</label><input id="f-name" type="text" autocomplete="name"></div>
+    <div class="field"><label for="f-phone">Phone</label><input id="f-phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+    <div class="field"><label for="f-email">Email <em>(optional)</em></label><input id="f-email" type="email" autocomplete="email" inputmode="email"></div>
+    <div class="field">
+      <label>Best time to reach you</label>
+      <div class="pill-row" id="besttime">
+        <button class="pill" data-value="morning">Morning</button>
+        <button class="pill" data-value="afternoon">Afternoon</button>
+        <button class="pill" data-value="evening">Evening</button>
+      </div>
+    </div>
+    <p class="privacy">We'll never share your information. A Kai care coordinator will reach out personally.</p>
+    <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" id="submitBtn" disabled>Show my care plan</button></div>
+  </section>
+</div>
+
+<!-- THE PLAN -->
+<div class="plan-wrap" id="planWrap" style="display:none;">
+  <div class="plan-doc">
+
+    <div class="plan-front">
+      <div class="plan-kicker">
+        <span class="brand-mark">Kai Home Care</span>
+        <span class="plan-date" id="p-date"></span>
+      </div>
+      <p class="prepared" id="p-prepared">Prepared for your family</p>
+      <h1 id="p-headline"></h1>
+      <div class="stat-row">
+        <div class="stat"><div class="lab">Care level</div><div class="val" id="p-tier"></div></div>
+        <div class="stat"><div class="lab">Weekly rhythm</div><div class="val" id="p-hours"><small id="p-days"></small></div></div>
+        <div class="stat"><div class="lab">Estimated investment</div><div class="val" id="p-cost"><small id="p-costmo"></small></div></div>
+      </div>
+    </div>
+
+    <div class="plan-week">
+      <h3>A week that works</h3>
+      <div class="week-grid" id="weekGrid"></div>
+      <p class="week-caption" id="weekCaption"></p>
+    </div>
+
+    <div class="plan-sec">
+      <h3>What a visit looks like</h3>
+      <p id="visitIntro"></p>
+      <ul class="visit-list" id="visitList"></ul>
+    </div>
+
+    <div class="plan-sec" id="riskSec" style="display:none;">
+      <h3>Planning around what worries you</h3>
+      <div id="riskCards"></div>
+    </div>
+
+    <div class="plan-sec">
+      <h3>The investment</h3>
+      <table class="cost-table" id="costTable"></table>
+      <p class="cost-fine">Estimates are a starting range based on your answers, using a 4-hour visit minimum. Your care coordinator will confirm exact pricing after a free in-home assessment. No contracts, no deposits, adjust or pause any time.</p>
+    </div>
+
+    <div class="plan-sec">
+      <h3>Why families choose Kai</h3>
+      <div class="why-grid">
+        <div class="why-item"><strong>Local and accountable</strong><span>We live and work on Oʻahu. Your coordinator answers the phone, knows your caregiver, and knows your family by name.</span></div>
+        <div class="why-item"><strong>The same faces, every visit</strong><span>We match caregivers for consistency. Familiarity builds trust, and trust is what makes care work.</span></div>
+        <div class="why-item"><strong>Clinically minded</strong><span>Our roots are in medical equipment and clinical care across Hawaiʻi. We plan around falls, discharges, and diagnoses, not just chores.</span></div>
+        <div class="why-item"><strong>Start small, adjust freely</strong><span>Begin with a few visits a week. Scale up, scale down, or pause. The plan serves your family, not the other way around.</span></div>
+      </div>
+    </div>
+
+    <div class="plan-cta">
+      <h3 id="ctaHead">Let's talk it through</h3>
+      <p id="ctaSub"></p>
+      <div class="plan-actions">
+        <a href="tel:8084009627" class="btn btn-primary">Call 808.400.9627</a>
+        <button class="btn btn-print" onclick="window.print()">Print this plan</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap"><div class="footer-bottom" style="border:0;">© 2026 Kai Home Care. Serving Oʻahu with aloha.</div></div>
+</footer>
+
+<script>
+(function(){
+  const RATES = { homemaker: 35, personal: 42, blended: 39 }; // placeholder $/hr
+  const MIN_VISIT = 4;
+
+  const answers = { whoFor:'', dailyLevel:'', hardParts:[], helpTypes:[], risks:[], timeline:'', bestTime:'' };
+  const steps = Array.from(document.querySelectorAll('.step'));
+  const progress = document.getElementById('progress');
+  let current = 1;
+  const TOTAL = 7;
+
+  function show(n){
+    steps.forEach(s => s.classList.toggle('active', +s.dataset.step === n));
+    current = n;
+    progress.style.width = Math.min(100, Math.round(((n-1)/TOTAL)*100)) + '%';
+    window.scrollTo({top:0, behavior:'smooth'});
+    if(n === 2) personalize();
+  }
+
+  function personalize(){
+    const w = answers.whoFor, t = document.getElementById('q2title');
+    if(w === 'myself') t.textContent = 'How are you managing day to day?';
+    else if(w === 'my parent') t.textContent = 'How is your parent managing day to day?';
+    else if(w === 'my spouse') t.textContent = 'How is your spouse managing day to day?';
+    else t.textContent = 'How are they managing day to day?';
+  }
+
+  document.querySelectorAll('.opts').forEach(group => {
+    const type = group.dataset.type, field = group.dataset.field;
+    const nextBtn = group.closest('.step').querySelector('.btn-next');
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(type === 'radio'){
+          group.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          answers[field] = btn.dataset.value;
+        } else {
+          if(btn.dataset.exclusive){
+            group.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+          } else {
+            group.querySelector('[data-exclusive]')?.classList.remove('selected');
+            btn.classList.toggle('selected');
+          }
+          answers[field] = Array.from(group.querySelectorAll('.opt.selected')).map(b => b.dataset.value);
+        }
+        nextBtn.disabled = type === 'radio' ? !answers[field] : answers[field].length === 0;
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-next').forEach(btn => {
+    if(btn.id === 'submitBtn') return;
+    btn.addEventListener('click', () => show(current + 1));
+  });
+  document.querySelectorAll('.back-link').forEach(btn => btn.addEventListener('click', () => show(current - 1)));
+
+  document.querySelectorAll('#besttime .pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('#besttime .pill').forEach(x => x.classList.remove('selected'));
+      p.classList.add('selected');
+      answers.bestTime = p.dataset.value;
+      validateContact();
+    });
+  });
+
+  const nameEl = document.getElementById('f-name'), phoneEl = document.getElementById('f-phone'), emailEl = document.getElementById('f-email');
+  const submitBtn = document.getElementById('submitBtn');
+  [nameEl, phoneEl, emailEl].forEach(el => el.addEventListener('input', validateContact));
+  function validateContact(){
+    submitBtn.disabled = !(nameEl.value.trim().length > 1 && phoneEl.value.replace(/\D/g,'').length >= 10);
+  }
+
+  function score(){
+    const hoursBand = { independent:[8,15], worry:[15,25], 'most-tasks':[25,40], constant:[40,60] };
+    let [lo, hi] = hoursBand[answers.dailyLevel] || [10,20];
+    const risks = answers.risks.filter(r => r !== 'none');
+    if(risks.length >= 1){ lo += 3; hi += 5; }
+    if(risks.length >= 3){ lo += 3; hi += 5; }
+    const personal = answers.helpTypes.some(v => ['bathing','mobility','medication'].includes(v))
+      || answers.hardParts.includes('mornings') || answers.hardParts.includes('evenings');
+    const homemaker = answers.helpTypes.some(v => ['companionship','meals-housekeeping','respite'].includes(v))
+      || answers.hardParts.some(v => ['meals','errands','alone'].includes(v));
+    let tier, tierKey;
+    if(personal && homemaker){ tier = 'Blended Care'; tierKey = 'blended'; }
+    else if(personal){ tier = 'Personal Care'; tierKey = 'personal'; }
+    else { tier = 'Homemaker'; tierKey = 'homemaker'; }
+    // days: derive from hours band
+    const mid = (lo + hi) / 2;
+    let days = mid <= 14 ? 3 : mid <= 22 ? 4 : mid <= 32 ? 5 : mid <= 45 ? 6 : 7;
+    let perVisit = Math.max(MIN_VISIT, Math.round(mid / days));
+    return { lo, hi, tier, tierKey, risks, days, perVisit };
+  }
+
+  function subjectWord(){
+    const w = answers.whoFor;
+    if(w === 'myself') return 'you';
+    if(w === 'my parent') return 'your parent';
+    if(w === 'my spouse') return 'your spouse';
+    return 'your loved one';
+  }
+
+  const RISK_CONTENT = {
+    fall: { fact: '1 in 4 seniors falls each year', h: 'After a fall',
+      p: 'A fall changes how someone moves through their own home, and fear of the next one often does more damage than the first. Your plan includes coverage during transfers, bathing, and the morning and evening hours when most falls happen. The goal is simple: confidence back.' },
+    memory: { fact: 'Routine and familiarity slow confusion', h: 'Memory changes',
+      p: 'With memory changes, consistency is the treatment. We prioritize the same caregivers on a steady, predictable schedule, so every visit is a familiar face and a familiar rhythm. Families tell us this alone lowers the daily anxiety more than anything else.' },
+    hospital: { fact: '1 in 5 discharges leads to readmission within 30 days', h: 'Coming home from the hospital',
+      p: 'The first weeks home carry the highest risk. Most readmissions trace back to missed medications, poor meals, and doing too much too soon. Your plan front-loads support in these weeks, then steps down as strength returns.' },
+    nutrition: { fact: 'Good meals are the cheapest medicine', h: 'Eating well again',
+      p: 'Weight loss in seniors is rarely about appetite alone. It\u2019s the shopping, the standing to cook, the eating alone. Your plan makes meals a daily anchor: planned, prepared, and shared with company.' },
+    wandering: { fact: 'Supervision prevents the emergency', h: 'Wandering and safety',
+      p: 'Wandering is frightening for everyone. Your plan builds supervision into the highest-risk hours and pairs it with engaging routine, because a person with somewhere to be and someone to be with wanders far less.' }
+  };
+
+  const VISIT_ITEMS = {
+    companionship: 'Conversation, a walk, cards, or just company. Someone paying attention.',
+    'meals-housekeeping': 'A hot meal prepared, kitchen cleaned, laundry moving, home kept safe and comfortable.',
+    bathing: 'Respectful hands-on help with bathing, dressing, and grooming, preserving dignity every step.',
+    mobility: 'Steady support moving between bed, chair, and bathroom. Transfers done safely, every time.',
+    medication: 'Medication reminders on schedule, with a caring eye on how each day is really going.',
+    respite: 'Real relief for the family caregiver. Step away, rest, and come back to good news.'
+  };
+
+  submitBtn.addEventListener('click', async () => {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Building your plan…';
+    const s = score();
+    const rate = RATES[s.tierKey];
+    const wkLo = Math.round(s.lo * rate / 5) * 5, wkHi = Math.round(s.hi * rate / 5) * 5;
+    const moLo = Math.round(wkLo * 4.33 / 50) * 50, moHi = Math.round(wkHi * 4.33 / 50) * 50;
+
+    const payload = {
+      'form-name': 'care-lead',
+      name: nameEl.value.trim(), phone: phoneEl.value.trim(), email: emailEl.value.trim() || 'not provided',
+      bestTime: answers.bestTime || 'not specified', whoFor: answers.whoFor, dailyLevel: answers.dailyLevel,
+      hardParts: answers.hardParts.join(', '), helpTypes: answers.helpTypes.join(', '),
+      risks: answers.risks.join(', '), timeline: answers.timeline,
+      recommendedTier: s.tier, recommendedHours: s.lo + '-' + s.hi + ' hrs/week',
+      estimatedCost: '$' + wkLo + '-' + wkHi + '/wk'
+    };
+    try {
+      await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(payload).toString() });
+    } catch(e){}
+
+    buildPlan(s, rate, wkLo, wkHi, moLo, moHi);
+    document.getElementById('calcWrap').style.display = 'none';
+    document.getElementById('planWrap').style.display = 'block';
+    window.scrollTo({top:0});
+  });
+
+  function buildPlan(s, rate, wkLo, wkHi, moLo, moHi){
+    const who = subjectWord();
+    const firstName = nameEl.value.trim().split(' ')[0];
+    const today = new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+    document.getElementById('p-date').textContent = today;
+    document.getElementById('p-prepared').textContent = 'Prepared for ' + firstName;
+    const headMap = {
+      myself: 'A plan built around your days, your home, your pace.',
+      'my parent': 'A plan built around your parent\u2019s days, in the home they love.',
+      'my spouse': 'A plan built around your spouse\u2019s days, and yours too.',
+      'someone else': 'A plan built around their days, in the home they love.'
+    };
+    document.getElementById('p-headline').textContent = headMap[answers.whoFor] || headMap['someone else'];
+    document.getElementById('p-tier').textContent = s.tier;
+    document.getElementById('p-hours').childNodes[0].textContent = s.lo + '–' + s.hi + ' hrs';
+    document.getElementById('p-days').textContent = s.days + ' days a week, ~' + s.perVisit + ' hrs a visit';
+    document.getElementById('p-cost').childNodes[0].textContent = '$' + wkLo + '–' + wkHi;
+    document.getElementById('p-costmo').textContent = 'per week · $' + moLo.toLocaleString() + '–' + moHi.toLocaleString() + '/mo';
+
+    // week grid
+    const names = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const patterns = {3:[0,2,4],4:[0,1,3,5],5:[0,1,2,3,4],6:[0,1,2,3,4,5],7:[0,1,2,3,4,5,6]};
+    const onDays = patterns[s.days] || [0,2,4];
+    const grid = document.getElementById('weekGrid');
+    grid.innerHTML = names.map((n,i) => {
+      const on = onDays.includes(i);
+      const h = on ? Math.min(100, (s.perVisit/10)*100) : 12;
+      return '<div class="day'+(on?' on':'')+'"><div class="bar-track"><div class="bar" style="height:'+h+'%"></div></div><div class="dname">'+n+'</div><div class="dhrs">'+(on ? s.perVisit+'h' : '—')+'</div></div>';
+    }).join('');
+    document.getElementById('weekCaption').textContent = 'A suggested starting rhythm: ' + s.days + ' visits a week, about ' + s.perVisit + ' hours each. Days and times flex to your family\u2019s schedule.';
+
+    // visit list
+    document.getElementById('visitIntro').textContent = 'Every visit is shaped around what matters most for ' + who + '. Based on your answers, a typical visit includes:';
+    const list = document.getElementById('visitList');
+    const chosen = answers.helpTypes.length ? answers.helpTypes : ['companionship'];
+    list.innerHTML = chosen.map(k => '<li>' + (VISIT_ITEMS[k]||'') + '</li>').join('');
+
+    // risks
+    if(s.risks.length){
+      document.getElementById('riskSec').style.display = 'block';
+      document.getElementById('riskCards').innerHTML = s.risks.map(r => {
+        const c = RISK_CONTENT[r]; if(!c) return '';
+        return '<div class="risk-card"><span class="fact">'+c.fact+'</span><h4>'+c.h+'</h4><p>'+c.p+'</p></div>';
+      }).join('');
+    }
+
+    // cost table
+    document.getElementById('costTable').innerHTML =
+      '<tr><td>'+s.tier+' rate</td><td>$'+rate+'/hour</td></tr>' +
+      '<tr><td>Suggested schedule</td><td>'+s.days+' visits × ~'+s.perVisit+' hrs</td></tr>' +
+      '<tr><td>Estimated weekly</td><td>$'+wkLo+'–'+wkHi+'</td></tr>' +
+      '<tr><td>Estimated monthly</td><td>$'+moLo.toLocaleString()+'–'+moHi.toLocaleString()+'</td></tr>';
+
+    // CTA
+    const timeTxt = answers.bestTime ? ' We\u2019ll call you in the ' + answers.bestTime + ', or reach us first:' : ' Reach us any time:';
+    document.getElementById('ctaSub').textContent = 'A Kai care coordinator will walk through this plan with you, answer everything, and set up a free in-home assessment.' + timeTxt;
+  }
+})();
+</script>
+
+</body>
+</html>
