@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers — Kai Home Care</title>
+<meta name="description" content="Caregiver jobs on Oʻahu. $24–27/hour, W-2 employment, steady matched clients. CNA, nurse aide, and experienced caregivers welcome.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* recruiting hero */
+.chero { background: linear-gradient(170deg, var(--ocean) 0%, var(--ocean-deep) 100%); color: var(--sand); }
+.chero .inner { max-width: var(--maxw); margin: 0 auto; padding: 96px 24px 84px; }
+.chero .eyebrow { text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.76rem; color: var(--seaglass); font-weight: 700; margin-bottom: 20px; }
+.chero h1 { color: var(--white); font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.1; max-width: 620px; margin-bottom: 22px; }
+.chero .pay { display: inline-flex; align-items: baseline; gap: 10px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); padding: 14px 22px; margin: 6px 0 26px; }
+.chero .pay b { font-family: 'Fraunces', serif; font-size: 1.7rem; color: var(--white); font-weight: 600; }
+.chero .pay span { color: #B9C9CE; font-size: 0.9rem; }
+.chero p.sub { font-size: 1.1rem; color: #C9D6DA; max-width: 540px; line-height: 1.7; }
+.chero .btn-primary { margin-top: 30px; padding: 15px 30px; font-size: 1.02rem; display: inline-block; }
+
+/* what the job is */
+.job-sec { padding: 84px 0; }
+.job-sec .eyebrow { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.72rem; color: var(--coral-dark); font-weight: 700; margin-bottom: 12px; }
+.job-sec h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(1.8rem, 3.6vw, 2.4rem); color: var(--ocean); margin-bottom: 16px; }
+.job-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+@media (max-width: 860px){ .job-grid { grid-template-columns: 1fr; gap: 36px; } }
+.job-grid p { color: var(--ink); line-height: 1.8; }
+.job-grid p + p { margin-top: 14px; }
+.offer-list { list-style: none; border-top: 1px solid rgba(27,58,75,0.14); }
+.offer-list li { padding: 16px 0; border-bottom: 1px solid rgba(27,58,75,0.1); line-height: 1.55; }
+.offer-list b { color: var(--ocean); }
+.honest { background: var(--sand-light); border-left: 4px solid var(--seaglass); padding: 24px 28px; margin-top: 26px; }
+.honest p { font-size: 0.98rem; }
+
+/* application form reuses calculator step chrome */
+.apply-sec { background: var(--white); border-top: 1px solid rgba(27,58,75,0.1); padding: 84px 0 100px; }
+.calc-wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+.apply-head { text-align: left; margin-bottom: 36px; }
+.apply-head h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.9rem; color: var(--ocean); margin-bottom: 8px; }
+.apply-head p { color: var(--muted); }
+.progress-track { height: 4px; background: rgba(27,58,75,0.12); margin-bottom: 40px; }
+.progress-fill { height: 100%; background: var(--coral); width: 0%; transition: width 0.35s ease; }
+.step { display: none; animation: rise 0.35s ease; }
+.step.active { display: block; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.step h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: clamp(1.3rem, 3.4vw, 1.7rem); color: var(--ocean); margin-bottom: 8px; line-height: 1.25; }
+.step .hint { color: var(--muted); margin-bottom: 26px; font-size: 0.98rem; }
+.opts { display: flex; flex-direction: column; gap: 11px; }
+.opt { display: flex; align-items: center; gap: 14px; background: var(--white); border: 2px solid rgba(27,58,75,0.13); border-radius: 10px; padding: 16px 18px; font-size: 1rem; font-weight: 500; color: var(--ink); cursor: pointer; transition: border-color .15s, background .15s; text-align: left; width: 100%; }
+.opt:hover { border-color: var(--seaglass); }
+.opt.selected { border-color: var(--coral); background: #FFF6F0; }
+.opt .box { width: 20px; height: 20px; border-radius: 4px; flex: none; border: 2px solid rgba(27,58,75,0.3); display: grid; place-items: center; font-size: 0.72rem; color: var(--white); }
+.opt.selected .box { background: var(--coral); border-color: var(--coral); }
+.opt.radio .box { border-radius: 50%; }
+.step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
+.back-link { background: none; border: 0; color: var(--muted); font-size: 0.95rem; cursor: pointer; padding: 10px; }
+.back-link:hover { color: var(--ocean); }
+.btn-next { min-width: 140px; }
+.btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.field { margin-bottom: 18px; }
+.field label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 7px; color: var(--ocean); }
+.field label em { font-weight: 400; color: var(--muted); font-style: normal; }
+.field input[type=text], .field input[type=tel], .field input[type=email], .field textarea {
+  width: 100%; padding: 14px 16px; font-size: 1.02rem; border: 2px solid rgba(27,58,75,0.15);
+  border-radius: 10px; font-family: inherit; background: var(--white);
+}
+.field textarea { min-height: 110px; resize: vertical; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--seaglass); }
+.file-drop { border: 2px dashed rgba(27,58,75,0.25); border-radius: 10px; padding: 22px; text-align: center; color: var(--muted); font-size: 0.95rem; cursor: pointer; }
+.file-drop.has { border-color: var(--seaglass); color: var(--ocean); background: var(--sand-light); }
+.file-drop input { display: none; }
+.done-card { background: var(--sand-light); padding: 40px 36px; border-top: 3px solid var(--seaglass); }
+.done-card h3 { margin-bottom: 12px; }
+.done-card p { color: var(--ink); line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="brand">Kai Home Care</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+    <div class="nav-links" id="navlinks">
+      <a href="/#services">Services</a>
+      <a href="/care-estimate.html">Care Estimate</a>
+      <a href="/careers.html">Careers</a>
+      <a href="/contact.html">Contact</a>
+      <a href="#apply" class="nav-cta">Apply now</a>
+    </div>
+  </nav>
+</header>
+
+<!-- hidden form for Netlify detection -->
+<form name="caregiver-application" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name"><input type="text" name="phone"><input type="email" name="email">
+  <input type="text" name="contactPref"><input type="text" name="areas"><input type="text" name="transport">
+  <input type="text" name="availability"><input type="text" name="hoursWanted"><input type="text" name="startWhen">
+  <input type="text" name="credentials"><input type="text" name="cpr"><input type="text" name="clearances">
+  <input type="text" name="experienceYears"><input type="text" name="experienceTypes"><input type="text" name="languages">
+  <input type="text" name="logistics"><input type="text" name="story">
+  <input type="text" name="screening"><input type="text" name="screenNotes">
+  <input type="file" name="resume">
+</form>
+
+<section class="chero">
+  <div class="inner">
+    <p class="eyebrow">Careers · Oʻahu</p>
+    <h1>Do work that matters, for a company that treats you like it does.</h1>
+    <div class="pay"><b>$24–27</b><span>per hour · W-2 employment</span></div>
+    <p class="sub">Kai Home Care hires caregivers and nurse aides across Oʻahu. Steady clients matched to you, a coordinator who answers the phone, and an employer that carries the taxes, workers' comp, and insurance so you never work exposed.</p>
+    <a href="#apply" class="btn btn-primary">Start your application</a>
+  </div>
+</section>
+
+<section class="job-sec">
+  <div class="wrap">
+    <p class="eyebrow">The job, honestly</p>
+    <h2>What we offer, and what we ask.</h2>
+    <div class="job-grid">
+      <div>
+        <ul class="offer-list">
+          <li><b>$24–27 per hour</b>, published because we don't play games with pay.</li>
+          <li><b>W-2 employment.</b> We pay the payroll taxes and carry workers' compensation. You're covered if you're hurt on the job. Agencies that 1099 you leave that on you.</li>
+          <li><b>Steady, matched clients.</b> You see the same families, visit after visit. No daily gig roulette.</li>
+          <li><b>A coordinator who answers.</b> Something wrong in the home? You call, a real person on Oʻahu picks up.</li>
+          <li><b>Four-hour minimum visits.</b> No two-hour drives for one-hour shifts.</li>
+        </ul>
+      </div>
+      <div>
+        <p>The work is real. You'll help people bathe, dress, and move safely. You'll cook, clean, drive to appointments, and sit with someone whose family can't be there. Some clients have memory loss and will ask you the same question nine times. Some days are heavy.</p>
+        <p>If that paragraph made you tired, this isn't your job, and that's fine. If it made you feel useful, keep reading, because families across this island are waiting for someone exactly like you.</p>
+        <div class="honest">
+          <p>We hire for character and reliability first. Credentials matter, but we've trained skills into people with heart far more often than we've found heart in people with resumes. Recent nurse aide graduates and experienced family caregivers are welcome to apply.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="apply-sec" id="apply">
+  <div class="calc-wrap">
+    <div class="apply-head">
+      <h2>The application</h2>
+      <p>About three minutes. No account, no cover letter. Resume optional.</p>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+
+    <section class="step active" data-step="1">
+      <h3>Which parts of Oʻahu can you reliably work?</h3>
+      <p class="hint">Select all that apply.</p>
+      <div class="opts" data-type="multi" data-field="areas">
+        <button class="opt" data-value="Honolulu / urban core"><span class="box">✓</span>Honolulu and the urban core</button>
+        <button class="opt" data-value="Windward"><span class="box">✓</span>Windward side (Kailua, Kāneʻohe)</button>
+        <button class="opt" data-value="Leeward / West"><span class="box">✓</span>Leeward and West (ʻEwa, Kapolei, Waiʻanae)</button>
+        <button class="opt" data-value="Central"><span class="box">✓</span>Central (Mililani, Wahiawā, Pearl City)</button>
+        <button class="opt" data-value="North Shore"><span class="box">✓</span>North Shore</button>
+        <button class="opt" data-value="East / Hawaii Kai"><span class="box">✓</span>East side (Hawaiʻi Kai, Kāhala)</button>
+      </div>
+      <div class="step-nav"><span></span><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="2">
+      <h3>How do you get to work?</h3>
+      <p class="hint">Visits happen across the island, so this matters.</p>
+      <div class="opts" data-type="radio" data-field="transport">
+        <button class="opt radio" data-value="own reliable vehicle"><span class="box">✓</span>My own reliable vehicle</button>
+        <button class="opt radio" data-value="shared household vehicle"><span class="box">✓</span>A shared household vehicle, usually available</button>
+        <button class="opt radio" data-value="bus / rideshare"><span class="box">✓</span>TheBus or rideshare</button>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="3">
+      <h3>When can you work?</h3>
+      <p class="hint">Select every window you're genuinely open to.</p>
+      <div class="opts" data-type="multi" data-field="availability">
+        <button class="opt" data-value="weekday days"><span class="box">✓</span>Weekday daytime</button>
+        <button class="opt" data-value="weekday evenings"><span class="box">✓</span>Weekday evenings</button>
+        <button class="opt" data-value="weekends"><span class="box">✓</span>Weekends</button>
+        <button class="opt" data-value="overnights"><span class="box">✓</span>Overnights</button>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="4">
+      <h3>How many hours a week do you want?</h3>
+      <div class="opts" data-type="radio" data-field="hoursWanted">
+        <button class="opt radio" data-value="under 20"><span class="box">✓</span>Under 20 hours</button>
+        <button class="opt radio" data-value="20-30"><span class="box">✓</span>20 to 30 hours</button>
+        <button class="opt radio" data-value="30-40"><span class="box">✓</span>30 to 40 hours</button>
+        <button class="opt radio" data-value="40+"><span class="box">✓</span>Full time, 40 or more</button>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="5">
+      <h3>Credentials and training</h3>
+      <p class="hint">Select all that apply. None is a fine answer.</p>
+      <div class="opts" data-type="multi" data-field="credentials">
+        <button class="opt" data-value="CNA licensed"><span class="box">✓</span>Licensed CNA</button>
+        <button class="opt" data-value="nurse aide course completed"><span class="box">✓</span>Nurse aide course completed</button>
+        <button class="opt" data-value="nurse aide student, graduating soon"><span class="box">✓</span>Nurse aide student, graduating soon</button>
+        <button class="opt" data-value="HHA training"><span class="box">✓</span>Home health aide training</button>
+        <button class="opt" data-value="CPR/First Aid current"><span class="box">✓</span>CPR / First Aid, current</button>
+        <button class="opt" data-value="none" data-exclusive="1"><span class="box">✓</span>None of these yet</button>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="6">
+      <h3>Employment requires a background check and TB clearance.</h3>
+      <p class="hint">Standard for home care in Hawaiʻi. We arrange both.</p>
+      <div class="opts" data-type="radio" data-field="clearances">
+        <button class="opt radio" data-value="yes, no issue"><span class="box">✓</span>No problem, I'll pass both</button>
+        <button class="opt radio" data-value="need to discuss"><span class="box">✓</span>I have something I'd want to explain first</button>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="7">
+      <h3>Your caregiving experience</h3>
+      <p class="hint">Paid or family. Select all that you've actually done.</p>
+      <div class="opts" data-type="multi" data-field="experienceTypes">
+        <button class="opt" data-value="dementia / memory care"><span class="box">✓</span>Dementia or memory care</button>
+        <button class="opt" data-value="transfers / mobility"><span class="box">✓</span>Transfers and mobility assistance</button>
+        <button class="opt" data-value="bathing / personal care"><span class="box">✓</span>Bathing and personal care</button>
+        <button class="opt" data-value="incontinence care"><span class="box">✓</span>Incontinence care</button>
+        <button class="opt" data-value="hospice / end of life"><span class="box">✓</span>Hospice or end-of-life care</button>
+        <button class="opt" data-value="meals / homemaking"><span class="box">✓</span>Meals and homemaking</button>
+        <button class="opt" data-value="new to caregiving" data-exclusive="1"><span class="box">✓</span>I'm new to caregiving</button>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="8">
+      <h3>Your client doesn't want to bathe today. What do you do?</h3>
+      <p class="hint">There's no trick here. We just want to know how you think.</p>
+      <div class="opts" data-type="radio" data-field="scenario1">
+        <button class="opt radio" data-value="s1a"><span class="box">✓</span>Respect it, try again later, and let my coordinator know</button>
+        <button class="opt radio" data-value="s1b"><span class="box">✓</span>Insist politely but firmly, since hygiene is part of the job</button>
+        <button class="opt radio" data-value="s1c"><span class="box">✓</span>Offer a smaller step, like a warm washcloth, and read how they feel</button>
+        <button class="opt radio" data-value="s1d"><span class="box">✓</span>Skip it, it's their choice and not worth mentioning</button>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="9">
+      <h3>You arrive and your client seems unusually confused and drowsy. What's your first move?</h3>
+      <div class="opts" data-type="radio" data-field="scenario2">
+        <button class="opt radio" data-value="s2a"><span class="box">✓</span>Stay with them and call the office or emergency line right away</button>
+        <button class="opt radio" data-value="s2b"><span class="box">✓</span>Let them rest and get started on housekeeping</button>
+        <button class="opt radio" data-value="s2c"><span class="box">✓</span>Check on them closely, ask questions, and call the office if anything seems off</button>
+        <button class="opt radio" data-value="s2d"><span class="box">✓</span>Make them coffee and see if they perk up</button>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" disabled>Next</button></div>
+    </section>
+
+    <section class="step" data-step="10">
+      <h3>Almost done.</h3>
+      <p class="hint">Tell us who you are and how to reach you.</p>
+      <div class="field"><label for="a-name">Full name</label><input id="a-name" type="text" autocomplete="name"></div>
+      <div class="field"><label for="a-phone">Phone</label><input id="a-phone" type="tel" inputmode="tel" autocomplete="tel"></div>
+      <div class="field"><label for="a-email">Email</label><input id="a-email" type="email" inputmode="email" autocomplete="email"></div>
+      <div class="field"><label for="a-langs">Languages you speak besides English <em>(optional, an asset here)</em></label><input id="a-langs" type="text" placeholder="Japanese, Ilocano, Tagalog, Korean…"></div>
+      <div class="field"><label for="a-story">Tell us about one person you've cared for and what they taught you. <em>(two or three sentences)</em></label><textarea id="a-story"></textarea></div>
+      <div class="field">
+        <label>Resume <em>(optional)</em></label>
+        <label class="file-drop" id="fileDrop">Tap to attach a resume (PDF or Word)<input type="file" id="a-resume" accept=".pdf,.doc,.docx"></label>
+      </div>
+      <div class="step-nav"><button class="back-link">← Back</button><button class="btn btn-primary btn-next" id="applySubmit" disabled>Submit application</button></div>
+    </section>
+
+    <section class="step" data-step="11">
+      <div class="done-card">
+        <h3 id="doneHead">Application received.</h3>
+        <p>A Kai coordinator reads every application personally, usually within two business days. If it looks like a fit, we'll call you. Keep an eye on your phone.</p>
+      </div>
+    </section>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap"><div class="footer-bottom" style="border:0;">© 2026 Kai Home Care. Licensed and insured. Serving Oʻahu with aloha.</div></div>
+</footer>
+
+<script>
+(function(){
+  const answers = { areas:[], transport:'', availability:[], hoursWanted:'', credentials:[], clearances:'', experienceTypes:[], scenario1:'', scenario2:'' };
+  const steps = Array.from(document.querySelectorAll('.step'));
+  const progress = document.getElementById('progress');
+  let current = 1;
+  const TOTAL = 10;
+
+  function show(n){
+    steps.forEach(s => s.classList.toggle('active', +s.dataset.step === n));
+    current = n;
+    progress.style.width = Math.min(100, Math.round(((n-1)/TOTAL)*100)) + '%';
+    document.getElementById('apply').scrollIntoView({behavior:'smooth'});
+  }
+
+  document.querySelectorAll('.opts').forEach(group => {
+    const type = group.dataset.type, field = group.dataset.field;
+    const nextBtn = group.closest('.step').querySelector('.btn-next');
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if(type === 'radio'){
+          group.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          answers[field] = btn.dataset.value;
+        } else {
+          if(btn.dataset.exclusive){
+            group.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+          } else {
+            group.querySelector('[data-exclusive]')?.classList.remove('selected');
+            btn.classList.toggle('selected');
+          }
+          answers[field] = Array.from(group.querySelectorAll('.opt.selected')).map(b => b.dataset.value);
+        }
+        nextBtn.disabled = type === 'radio' ? !answers[field] : answers[field].length === 0;
+      });
+    });
+  });
+
+  document.querySelectorAll('.btn-next').forEach(btn => {
+    if(btn.id === 'applySubmit') return;
+    btn.addEventListener('click', () => show(current + 1));
+  });
+  document.querySelectorAll('.back-link').forEach(btn => btn.addEventListener('click', () => show(current - 1)));
+
+  const nameEl = document.getElementById('a-name'), phoneEl = document.getElementById('a-phone'), emailEl = document.getElementById('a-email');
+  const submitBtn = document.getElementById('applySubmit');
+  [nameEl, phoneEl, emailEl].forEach(el => el.addEventListener('input', validate));
+  function validate(){
+    submitBtn.disabled = !(nameEl.value.trim().length > 1
+      && phoneEl.value.replace(/\D/g,'').length >= 10
+      && /.+@.+\..+/.test(emailEl.value));
+  }
+
+  const fileInput = document.getElementById('a-resume');
+  const fileDrop = document.getElementById('fileDrop');
+  fileInput.addEventListener('change', () => {
+    if(fileInput.files.length){
+      fileDrop.classList.add('has');
+      fileDrop.childNodes[0].nodeValue = fileInput.files[0].name + ' attached ';
+    }
+  });
+
+  // silent screening: computed server-side-invisible, sent as backend fields only
+  function screen(){
+    const s1 = { s1a:'strong', s1c:'strong', s1b:'flag', s1d:'flag' }[answers.scenario1] || 'unanswered';
+    const s2 = { s2a:'strong', s2c:'strong', s2b:'flag', s2d:'flag' }[answers.scenario2] || 'unanswered';
+    const notes = [];
+    if(s1 === 'flag') notes.push('scenario1: ' + (answers.scenario1 === 's1b' ? 'chose to insist over client refusal' : 'chose to skip and not report'));
+    if(s2 === 'flag') notes.push('scenario2: ' + (answers.scenario2 === 's2b' ? 'would leave drowsy/confused client and do chores' : 'coffee-and-wait on possible medical change'));
+    if(answers.transport === 'bus / rideshare') notes.push('no personal vehicle');
+    if(answers.clearances !== 'yes, no issue') notes.push('background/TB: wants to discuss');
+    if(answers.credentials.includes('none') && answers.experienceTypes.includes('new to caregiving')) notes.push('no credentials and no experience');
+    let grade;
+    if(s1 === 'strong' && s2 === 'strong' && notes.length === 0) grade = 'A';
+    else if(s1 !== 'flag' && s2 !== 'flag' && notes.length <= 1) grade = 'B';
+    else if(notes.length <= 2) grade = 'C';
+    else grade = 'REVIEW';
+    return { grade, notes: notes.join(' | ') || 'clean' };
+  }
+
+  submitBtn.addEventListener('click', async () => {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    const sc = screen();
+    const fd = new FormData();
+    fd.append('form-name', 'caregiver-application');
+    fd.append('name', nameEl.value.trim());
+    fd.append('phone', phoneEl.value.trim());
+    fd.append('email', emailEl.value.trim());
+    fd.append('areas', answers.areas.join(', '));
+    fd.append('transport', answers.transport);
+    fd.append('availability', answers.availability.join(', '));
+    fd.append('hoursWanted', answers.hoursWanted);
+    fd.append('startWhen', '');
+    fd.append('credentials', answers.credentials.join(', '));
+    fd.append('clearances', answers.clearances);
+    fd.append('experienceTypes', answers.experienceTypes.join(', '));
+    fd.append('languages', document.getElementById('a-langs').value.trim() || 'none listed');
+    fd.append('story', document.getElementById('a-story').value.trim() || '(left blank)');
+    fd.append('screening', sc.grade);
+    fd.append('screenNotes', sc.notes);
+    if(fileInput.files.length) fd.append('resume', fileInput.files[0]);
+    try {
+      await fetch('/', { method: 'POST', body: fd });
+    } catch(e){}
+    const first = nameEl.value.trim().split(' ')[0];
+    document.getElementById('doneHead').textContent = 'Mahalo, ' + first + '. Application received.';
+    show(11);
+    progress.style.width = '100%';
+  });
+})();
+</script>
+
+</body>
+</html>
